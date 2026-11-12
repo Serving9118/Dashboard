@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scioperi e asilo nido — Comune di Milano</title>
+<style>
+  :root {
+    --bg: #faf9f6; --panel: #ffffff; --fg: #1f1e1c; --muted: #6b6862; --line: #e6e3dc;
+    --alto: #c2412d; --medio: #b7791f; --basso: #8a8780; --nessuno: #3f8f5a; --grid: #ece9e2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1c1b19; --panel: #262522; --fg: #ecebe7; --muted: #a39f97; --line: #3a3834;
+      --alto: #e2674f; --medio: #d9a03c; --basso: #8f8b84; --nessuno: #5fb37b; --grid: #33312d; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 20px 48px; display: flex; flex-direction: column; gap: 28px; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; font-size: 2rem; margin: 0; line-height: 1.2; }
+  h2 { font-size: 1.1rem; font-weight: 600; margin: 0 0 8px; }
+  .sub { color: var(--muted); font-size: .875rem; margin: 4px 0 0; }
+  .lead { font-size: 1.05rem; margin: 0; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .card .label { font-size: .85rem; color: var(--muted); }
+  .big { font-family: Georgia, serif; font-size: 2.4rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .chart { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+  .chart svg { display: block; width: 100%; }
+  .chart text { fill: var(--muted); font-size: 12px; }
+  .tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--line);
+    box-shadow: 0 4px 16px rgba(0,0,0,.12); border-radius: 8px; padding: 8px 10px; font-size: .82rem; max-width: 260px; z-index: 5; }
+  .tip b { display: block; margin-bottom: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: .82rem; color: var(--muted); margin-top: 8px; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; background: var(--c); }
+  .tablewrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { color: var(--muted); font-weight: 600; white-space: nowrap; }
+  td.nw { white-space: nowrap; }
+  tr.past td { opacity: .5; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-weight: 600; border: 1px solid currentColor; }
+  .notes { font-size: .85rem; color: var(--muted); }
+  .notes ul { margin: 6px 0 0; padding-left: 1.2em; }
+  footer { font-size: .78rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Scioperi e asilo nido — Comune di Milano</h1>
+    <p class="sub">Da metà novembre 2026 a metà gennaio 2027 · dati aggiornati al <span id="agg"></span></p>
+  </header>
+
+  <p class="lead" id="sintesi"></p>
+
+  <div class="cards">
+    <div class="card"><span class="label">Giorni ad alto rischio</span><span class="big" style="color:var(--alto)" id="n-Alto">—</span><span class="sub">Scioperi generali che coinvolgono il personale comunale</span></div>
+    <div class="card"><span class="label">Giorni a rischio solo se il nido è in appalto</span><span class="big" style="color:var(--medio)" id="n-Medio">—</span><span class="sub">Sciopero delle cooperative sociali</span></div>
+    <div class="card"><span class="label">Giorni con problemi di trasporto</span><span class="big" id="n-Basso">—</span><span class="sub">Nido aperto, ma mezzi Atm o treni a rischio</span></div>
+  </div>
+
+  <section>
+    <h2>Calendario: cosa succede e quanto pesa sul nido</h2>
+    <div class="chart" id="chart"></div>
+    <div class="legend">
+      <span style="--c:var(--alto)">Alto</span>
+      <span style="--c:var(--medio)">Medio (solo nidi in appalto)</span>
+      <span style="--c:var(--basso)">Basso (trasporti)</span>
+      <span style="--c:var(--nessuno)">Nessuno (non riguarda i nidi)</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tutti gli eventi</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Data</th><th>Evento</th><th>Chi lo indice</th><th>Chi coinvolge</th><th>Rischio per il nido</th><th>Cosa significa</th><th>Fonte</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <details class="notes">
+    <summary>Cosa tenere a mente</summary>
+    <ul>
+      <li>Gennaio 2027: per ora non risulta nessuno sciopero che tocchi i nidi.</li>
+      <li>Alcuni piccoli sindacati (es. CSLE) proclamano scioperi solo per nidi e scuole dell'infanzia comunali con poche settimane di preavviso; le assemblee in orario di servizio hanno preavvisi ancora più brevi. Controllate la bacheca del nido e il Cruscotto degli scioperi della Funzione Pubblica.</li>
+      <li>Il 16 novembre conta solo se il nido è gestito da una cooperativa: chiedetelo alla responsabile.</li>
+    </ul>
+  </details>
+
+  <footer>Elenco compilato con ricerche web su testate e siti sindacali; non è un elenco ufficiale. Verificate sempre con il nido e con il Cruscotto degli scioperi della Funzione Pubblica.</footer>
+</main>
+
+<script>
+// ===== DATI: questa sezione viene aggiornata automaticamente =====
+const AGGIORNATO = "2026-11-12";
+const EVENTI = [
+  {"id":"atm-1113","data":"2026-11-13","evento":"Sciopero Atm 24 ore","promotori":"Sindacato del personale Atm","coinvolge":"Metro, bus e tram a Milano","rischio_nido":"Basso","nota":"Il nido è aperto, ma arrivarci con i mezzi può essere difficile","fonte":"trend-online.com"},
+  {"id":"coop-1116","data":"2026-11-16","evento":"Sciopero nazionale cooperative sociali","promotori":"USB Lavoro Privato","coinvolge":"Lavoratori delle cooperative (anche servizi educativi in appalto ai Comuni)","rischio_nido":"Medio","nota":"Riguarda il nido solo se è gestito da una cooperativa in appalto","fonte":"skuola.net / usb.it"},
+  {"id":"assemblee-1116","data":"2026-11-16","evento":"Assemblee sindacali in orario di servizio","promotori":"Sindacati della scuola","coinvolge":"Scuole statali","rischio_nido":"Nessuno","nota":"Non riguarda i nidi comunali","fonte":"ansa.it"},
+  {"id":"gen-1120","data":"2026-11-20","evento":"Sciopero generale Cgil + sciopero scuola e pubblico impiego USB","promotori":"Cgil; Usb Pubblico Impiego","coinvolge":"Tutti i settori pubblici e privati, compresi i servizi in appalto","rischio_nido":"Alto","nota":"Possibili riduzioni o chiusure: dipende dall'adesione delle educatrici","fonte":"adnkronos.com / milanobiz.it"},
+  {"id":"treni-1120","data":"2026-11-20","evento":"Sciopero treni e trasporto locale (dalle 21 del 20 alle 20 del 21)","promotori":"Sgb; Cub Trasporti","coinvolge":"Treni, merci, trasporto pubblico locale","rischio_nido":"Basso","nota":"Possibili problemi di spostamento la sera del 20","fonte":"adnkronos.com"},
+  {"id":"gen-1204","data":"2026-12-04","evento":"Sciopero generale dei sindacati di base","promotori":"Cub, Sgb, Adl Varese, Si Cobas e altre sigle di base","coinvolge":"Tutte le categorie pubbliche e private","rischio_nido":"Alto","nota":"Possibili riduzioni o chiusure: dipende dall'adesione","fonte":"scuolainforma.news / pixidia.com"},
+  {"id":"scuola-1218","data":"2026-12-18","evento":"Sciopero scuola statale","promotori":"La Voce dei Giusti","coinvolge":"Personale docente, educativo e ATA delle scuole statali","rischio_nido":"Nessuno","nota":"Non riguarda i nidi comunali","fonte":"orizzonteinsegnanti.it"}
+];
+const PERIODO = ["2026-11-12", "2027-01-15"];
+// ===== FINE DATI =====
+
+const LIVELLI = ["Alto", "Medio", "Basso", "Nessuno"];
+const COLORE = { Alto: "var(--alto)", Medio: "var(--medio)", Basso: "var(--basso)", Nessuno: "var(--nessuno)" };
+const GIORNI = ["dom","lun","mar","mer","gio","ven","sab"], GIORNI_L = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+const MESI = ["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"], MESI_L = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const parse = (s) => new Date(s + "T00:00:00Z");
+const corto = (s) => { const d = parse(s); return GIORNI[d.getUTCDay()] + " " + d.getUTCDate() + " " + MESI[d.getUTCMonth()]; };
+const lungo = (s) => { const d = parse(s); return GIORNI_L[d.getUTCDay()] + " " + d.getUTCDate() + " " + MESI_L[d.getUTCMonth()]; };
+const oggi = new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/Rome" });
+const el = (tag, attrs = {}, text) => { const e = document.createElement(tag); Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); if (text != null) e.textContent = text; return e; };
+
+document.getElementById("agg").textContent = lungo(AGGIORNATO) + " " + AGGIORNATO.slice(0, 4);
+
+// Sintesi
+const sintesi = document.getElementById("sintesi");
+const prossimo = EVENTI.filter((e) => e.rischio_nido === "Alto" && e.data >= oggi).sort((a, b) => a.data < b.data ? -1 : 1)[0];
+if (prossimo) {
+  sintesi.append("Prossima giornata ad alto rischio per il nido: ", el("b", {}, lungo(prossimo.data)), ", " + prossimo.evento + ". Il servizio può essere ridotto o sospeso a seconda di quante educatrici aderiscono.");
+} else {
+  sintesi.textContent = "Al momento non risultano altre giornate ad alto rischio per il nido nel periodo.";
+}
+
+// Conteggi (date diverse per livello)
+["Alto", "Medio", "Basso"].forEach((liv) => {
+  document.getElementById("n-" + liv).textContent = new Set(EVENTI.filter((e) => e.rischio_nido === liv).map((e) => e.data)).size;
+});
+
+// Tabella
+const tbody = document.getElementById("rows");
+EVENTI.slice().sort((a, b) => a.data < b.data ? -1 : 1).forEach((r) => {
+  const tr = el("tr", r.data < oggi ? { class: "past" } : {});
+  tr.append(el("td", { class: "nw" }, corto(r.data)), el("td", {}, r.evento), el("td", {}, r.promotori), el("td", {}, r.coinvolge));
+  const td = el("td"); const p = el("span", { class: "pill" }, r.rischio_nido); p.style.color = COLORE[r.rischio_nido]; td.append(p); tr.append(td);
+  tr.append(el("td", {}, r.nota), el("td", {}, r.fonte));
+  tbody.append(tr);
+});
+
+// Calendario (SVG)
+const NS = "http://www.w3.org/2000/svg";
+const svgEl = (tag, attrs = {}, text) => { const e = document.createElementNS(NS, tag); Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); if (text != null) e.textContent = text; return e; };
+function disegna() {
+  const box = document.getElementById("chart");
+  box.replaceChildren();
+  const W = Math.max(300, box.clientWidth - 16), H = 230, m = { t: 22, r: 16, b: 30, l: 74 };
+  const t0 = parse(PERIODO[0]).getTime(), t1 = parse(PERIODO[1]).getTime();
+  const x = (s) => m.l + (parse(s).getTime() - t0) / (t1 - t0) * (W - m.l - m.r);
+  const y = (liv) => m.t + 10 + LIVELLI.indexOf(liv) * ((H - m.b - m.t - 20) / (LIVELLI.length - 1));
+  const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, height: H, role: "img", "aria-label": "Calendario degli scioperi per livello di rischio per il nido" });
+  LIVELLI.forEach((liv) => {
+    svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: y(liv), y2: y(liv), stroke: "var(--grid)" }));
+    svg.append(svgEl("text", { x: m.l - 8, y: y(liv), dy: "0.32em", "text-anchor": "end" }, liv));
+  });
+  // assi: un tick ogni 1° e 15 del mese (meno su schermi stretti)
+  const ticks = []; const d = parse(PERIODO[0]); d.setUTCDate(1);
+  while (d.getTime() <= t1) { [1, 15].forEach((g) => { const s = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), g)).toISOString().slice(0, 10); if (parse(s).getTime() >= t0 && parse(s).getTime() <= t1) ticks.push(s); }); d.setUTCMonth(d.getUTCMonth() + 1); }
+  (W < 480 ? ticks.filter((_, i) => i % 2 === 0) : ticks).forEach((s) => {
+    svg.append(svgEl("line", { x1: x(s), x2: x(s), y1: H - m.b, y2: H - m.b + 4, stroke: "var(--muted)" }));
+    svg.append(svgEl("text", { x: x(s), y: H - m.b + 18, "text-anchor": "middle" }, parse(s).getUTCDate() + " " + MESI[parse(s).getUTCMonth()]));
+  });
+  svg.append(svgEl("line", { x1: m.l, x2: W - m.r, y1: H - m.b, y2: H - m.b, stroke: "var(--muted)" }));
+  if (oggi >= PERIODO[0] && oggi <= PERIODO[1]) {
+    svg.append(svgEl("line", { x1: x(oggi), x2: x(oggi), y1: m.t - 8, y2: H - m.b, stroke: "var(--muted)", "stroke-dasharray": "3,3" }));
+    svg.append(svgEl("text", { x: x(oggi) + 4, y: m.t - 10 }, "oggi"));
+  }
+  const tip = el("div", { class: "tip" }); tip.hidden = true;
+  const mostra = (e) => {
+    tip.replaceChildren(el("b", {}, lungo(e.data) + " · " + e.rischio_nido), el("div", {}, e.evento));
+    const n = el("div", {}, e.nota); n.style.color = "var(--muted)"; tip.append(n); tip.hidden = false;
+    const scala = box.clientWidth / W;
+    tip.style.left = Math.max(0, Math.min(x(e.data) * scala, box.clientWidth - 270)) + "px";
+    tip.style.top = (y(e.rischio_nido) * scala + 18) + "px";
+  };
+  EVENTI.forEach((e) => {
+    const c = svgEl("circle", { cx: x(e.data), cy: y(e.rischio_nido), r: 8, tabindex: 0 });
+    c.style.fill = COLORE[e.rischio_nido]; c.style.cursor = "pointer";
+    c.addEventListener("mouseenter", () => mostra(e)); c.addEventListener("focus", () => mostra(e)); c.addEventListener("click", () => mostra(e));
+    c.addEventListener("mouseleave", () => { tip.hidden = true; }); c.addEventListener("blur", () => { tip.hidden = true; });
+    svg.append(c);
+    if (e.rischio_nido === "Alto") svg.append(svgEl("text", { x: x(e.data), y: y(e.rischio_nido) - 13, "text-anchor": "middle" }, corto(e.data)));
+  });
+  box.append(svg, tip);
+}
+disegna();
+let timer; window.addEventListener("resize", () => { clearTimeout(timer); timer = setTimeout(disegna, 150); });
+</script>
+</body>
+</html>
