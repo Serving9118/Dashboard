@@ -58,7 +58,7 @@
   <div class="cards">
     <div class="card"><span class="label">Giorni ad alto rischio</span><span class="big" style="color:var(--alto)" id="n-Alto">—</span><span class="sub">Scioperi generali che coinvolgono il personale comunale</span></div>
     <div class="card"><span class="label">Giorni a rischio solo se il nido è in appalto</span><span class="big" style="color:var(--medio)" id="n-Medio">—</span><span class="sub">Sciopero delle cooperative sociali</span></div>
-    <div class="card"><span class="label">Giorni con problemi di trasporto</span><span class="big" id="n-Basso">—</span><span class="sub">Nido aperto, ma mezzi Atm o treni a rischio</span></div>
+    <div class="card"><span class="label">Giorni con problemi di trasporto</span><span class="big" id="n-Basso">—</span><span class="sub">Nido aperto, ma mezzi Atm, treni o voli a rischio</span></div>
   </div>
 
   <section>
@@ -103,9 +103,12 @@ const EVENTI = [
   {"id":"assemblee-1116","data":"2026-11-16","evento":"Assemblee sindacali in orario di servizio","promotori":"Sindacati della scuola","coinvolge":"Scuole statali","rischio_nido":"Nessuno","nota":"Non riguarda i nidi comunali","fonte":"ansa.it"},
   {"id":"gen-1120","data":"2026-11-20","evento":"Sciopero generale Cgil + sciopero scuola e pubblico impiego USB","promotori":"Cgil; Usb Pubblico Impiego","coinvolge":"Tutti i settori pubblici e privati, compresi i servizi in appalto","rischio_nido":"Alto","nota":"Possibili riduzioni o chiusure: dipende dall'adesione delle educatrici","fonte":"adnkronos.com / milanobiz.it"},
   {"id":"treni-1120","data":"2026-11-20","evento":"Sciopero treni e trasporto locale (dalle 21 del 20 alle 20 del 21)","promotori":"Sgb; Cub Trasporti","coinvolge":"Treni, merci, trasporto pubblico locale","rischio_nido":"Basso","nota":"Possibili problemi di spostamento la sera del 20","fonte":"adnkronos.com"},
+  {"id":"enav-1122","data":"2026-11-22","evento":"Sciopero controllori di volo Enav a Malpensa (24 ore)","promotori":"Fast-Confsal","coinvolge":"Voli da e per Milano Malpensa","rischio_nido":"Basso","nota":"Nido non coinvolto (è domenica). Voli garantiti 7-10 e 18-21: controllate il vostro volo","fonte":"quifinanza.it / quotidianomotori.com / avvisoscioperi.it"},
   {"id":"treni-1203","data":"2026-12-03","evento":"Sciopero treni (dalle 21 del 3 alle 21 del 4 dicembre)","promotori":"Cub e altri sindacati di base","coinvolge":"Treni","rischio_nido":"Basso","nota":"Possibili problemi di spostamento in treno il 4 dicembre","fonte":"quotidianomotori.com"},
   {"id":"gen-1204","data":"2026-12-04","evento":"Sciopero generale dei sindacati di base","promotori":"Cub, Sgb, Adl Varese, Si Cobas e altre sigle di base","coinvolge":"Tutte le categorie pubbliche e private","rischio_nido":"Alto","nota":"Possibili riduzioni o chiusure: dipende dall'adesione","fonte":"scuolainforma.news / pixidia.com"},
-  {"id":"scuola-1218","data":"2026-12-18","evento":"Sciopero scuola statale","promotori":"La Voce dei Giusti","coinvolge":"Personale docente, educativo e ATA delle scuole statali","rischio_nido":"Nessuno","nota":"Non riguarda i nidi comunali","fonte":"orizzonteinsegnanti.it"}
+  {"id":"trasporti-1204","data":"2026-12-04","evento":"Sciopero generale di base: anche aerei e Atm (orari da comunicare)","promotori":"Cub, Sgb, Adl Varese, Si Cobas e altre sigle di base","coinvolge":"Voli, aeroporti, metro, bus e tram a Milano","rischio_nido":"Basso","nota":"Possibili cancellazioni di voli e mezzi Atm ridotti; Atm comunicherà le fasce di garanzia","fonte":"qualitytravel.it"},
+  {"id":"scuola-1218","data":"2026-12-18","evento":"Sciopero scuola statale","promotori":"La Voce dei Giusti","coinvolge":"Personale docente, educativo e ATA delle scuole statali","rischio_nido":"Nessuno","nota":"Non riguarda i nidi comunali","fonte":"orizzonteinsegnanti.it"},
+  {"id":"enav-0115","data":"2027-01-15","evento":"Sciopero nazionale controllori di volo Enav e tecnici Techno Sky (24 ore)","promotori":"Sindacati del personale Enav e Techno Sky","coinvolge":"Voli in tutta Italia, compresi Linate, Malpensa e Bergamo","rischio_nido":"Basso","nota":"Il nido non è coinvolto; possibili ritardi e cancellazioni di voli","fonte":"avvisoscioperi.it"}
 ];
 const PERIODO = ["2026-11-16", "2027-01-16"];
 // ===== FINE DATI =====
