@@ -96,18 +96,19 @@
 
 <script>
 // ===== DATI: questa sezione viene aggiornata automaticamente =====
-const AGGIORNATO = "2026-11-24";
+const AGGIORNATO = "2026-11-27";
 const EVENTI = [
   {"id":"gen-1120","data":"2026-11-20","evento":"Sciopero generale Cgil + sciopero scuola e pubblico impiego USB","promotori":"Cgil; Usb Pubblico Impiego","coinvolge":"Tutti i settori pubblici e privati, compresi i servizi in appalto","rischio_nido":"Alto","nota":"Possibili riduzioni o chiusure: dipende dall'adesione delle educatrici","fonte":"adnkronos.com / milanobiz.it"},
   {"id":"treni-1120","data":"2026-11-20","evento":"Sciopero treni e trasporto locale (dalle 21 del 20 alle 20 del 21)","promotori":"Sgb; Cub Trasporti","coinvolge":"Treni, merci, trasporto pubblico locale","rischio_nido":"Basso","nota":"Possibili problemi di spostamento la sera del 20","fonte":"adnkronos.com"},
   {"id":"enav-1122","data":"2026-11-22","evento":"Sciopero controllori di volo Enav a Malpensa (24 ore)","promotori":"Fast-Confsal","coinvolge":"Voli da e per Milano Malpensa","rischio_nido":"Basso","nota":"Nido non coinvolto (è domenica). Voli garantiti 7-10 e 18-21: controllate il vostro volo","fonte":"quifinanza.it / quotidianomotori.com / avvisoscioperi.it"},
-  {"id":"treni-1203","data":"2026-12-03","evento":"Sciopero treni (dalle 21 del 3 alle 21 del 4 dicembre)","promotori":"Cub e altri sindacati di base","coinvolge":"Treni","rischio_nido":"Basso","nota":"Possibili problemi di spostamento in treno il 4 dicembre","fonte":"quotidianomotori.com"},
+  {"id":"treni-1203","data":"2026-12-03","evento":"Sciopero treni (dalle 21 del 3 alle 21 del 4 dicembre)","promotori":"Cub e altri sindacati di base","coinvolge":"Treni","rischio_nido":"Basso","nota":"Treni fermi dalle 21 del 3 alle 21 del 4 dicembre (Trenord e Malpensa Express compresi); il 3 viaggiano i treni in partenza entro le 21. Il 4 garantiti solo i treni nelle liste dei servizi minimi (fasce 6-9 e 18-21); bus sostitutivi Trenord per Malpensa","fonte":"mitomorrow.it / milanobiz.it / skuola.net"},
   {"id":"gen-1204","data":"2026-12-04","evento":"Sciopero generale dei sindacati di base","promotori":"Cub, Sgb, Adl Varese, Si Cobas e altre sigle di base","coinvolge":"Tutte le categorie pubbliche e private","rischio_nido":"Alto","nota":"Possibili riduzioni o chiusure: dipende dall'adesione","fonte":"scuolainforma.news / pixidia.com"},
-  {"id":"trasporti-1204","data":"2026-12-04","evento":"Sciopero generale di base: anche aerei e Atm (orari da comunicare)","promotori":"Cub, Sgb, Adl Varese, Si Cobas e altre sigle di base","coinvolge":"Voli, aeroporti, metro, bus e tram a Milano","rischio_nido":"Basso","nota":"Possibili cancellazioni di voli e mezzi Atm ridotti; adesione Atm e fasce di garanzia non ancora comunicate (Atm le annuncia almeno 5 giorni prima)","fonte":"qualitytravel.it / milanobiz.it"},
+  {"id":"trasporti-1204","data":"2026-12-04","evento":"Sciopero generale di base: aerei (24 ore) e possibile adesione Atm","promotori":"Cub, Sgb, Adl Varese, Si Cobas e altre sigle di base","coinvolge":"Voli, aeroporti, metro, bus e tram a Milano","rischio_nido":"Basso","nota":"Voli: sciopero 00-24, garantiti i voli 7-10 e 18-21; possibili cancellazioni a Linate e Malpensa. Atm: adesione e fasce di garanzia non ancora comunicate (Atm le annuncia almeno 5 giorni prima)","fonte":"mitomorrow.it / missionline.it / milanobiz.it"},
+  {"id":"italo-1216","data":"2026-12-16","evento":"Sciopero Italo (23 ore dalle 3 del 16 alle 2 del 17; altra astensione 9:01-16:59)","promotori":"Uiltrasporti; Filt-Cgil, Fit-Cisl, Ugl Ferrovieri","coinvolge":"Treni Italo","rischio_nido":"Basso","nota":"Il nido non è coinvolto; possibili cancellazioni di treni Italo da e per Milano: controllate il vostro treno","fonte":"skuola.net / avvisoscioperi.it / businessonline.it"},
   {"id":"scuola-1218","data":"2026-12-18","evento":"Sciopero scuola statale","promotori":"La Voce dei Giusti","coinvolge":"Personale docente, educativo e ATA delle scuole statali","rischio_nido":"Nessuno","nota":"Non riguarda i nidi comunali","fonte":"orizzonteinsegnanti.it"},
   {"id":"enav-0115","data":"2027-01-15","evento":"Sciopero nazionale controllori di volo Enav e tecnici Techno Sky (24 ore), più sciopero locale Enav a Linate","promotori":"Uiltrasporti (UILT-UIL)","coinvolge":"Voli in tutta Italia, compresi Linate, Malpensa e Bergamo","rischio_nido":"Basso","nota":"Il nido non è coinvolto; possibili ritardi e cancellazioni di voli, in particolare a Linate (24 ore). Voli garantiti di norma 7-10 e 18-21","fonte":"scioperiitalia.it (dati MIT) / avvisoscioperi.it"}
 ];
-const PERIODO = ["2026-11-24", "2027-01-24"];
+const PERIODO = ["2026-11-27", "2027-01-27"];
 // ===== FINE DATI =====
 
 const LIVELLI = ["Alto", "Medio", "Basso", "Nessuno"];
